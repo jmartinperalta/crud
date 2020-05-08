@@ -6,7 +6,7 @@
             "value": "8bcb5781-f38f-411c-9b22-34c1e8b45c83"
         },
         "name": {
-            "value": "PruebaNombre"
+            "value": "PruebaLabWebApp"
         },
         "location": {
             "value": "Central US"
@@ -15,10 +15,10 @@
             "value": ""
         },
         "hostingPlanName": {
-            "value": "ASP-POCRG-9844"
+            "value": "AppServicePruebaLab"
         },
         "serverFarmResourceGroup": {
-            "value": "POCRG"
+            "value": "RG-PruebaLab"
         },
         "alwaysOn": {
             "value": false
