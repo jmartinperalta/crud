@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "AppServicePruebaLab"
+            "value": "AppServiceyml"
         },
         "hostingEnvironment": {
             "value": ""
         },
         "location": {
-            "value": "South Central US"
+            "value": "West US 2"
         },
         "sku": {
             "value": "Basic"
