@@ -6,7 +6,7 @@
             "value": "8bcb5781-f38f-411c-9b22-34c1e8b45c83"
         },
         "name": {
-            "value": "PruebaLabWebApp"
+            "value": "CrudLabWebApp"
         },
         "location": {
             "value": "West US 2"
@@ -15,10 +15,10 @@
             "value": ""
         },
         "hostingPlanName": {
-            "value": "AppServicePruebaLab"
+            "value": "AppServiceyml"
         },
         "serverFarmResourceGroup": {
-            "value": "RG-PruebaLab"
+            "value": "yaml-RG"
         },
         "alwaysOn": {
             "value": false
