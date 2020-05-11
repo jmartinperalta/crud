@@ -63,3 +63,32 @@ stages:
         templateLocation: 'URL of the file'
         csmFileLink: 'https://raw.githubusercontent.com/jmartinperalta/crud/master/mysql/template.json'
         deploymentMode: 'Incremental'
+- stage: ConfigApps
+  jobs:
+  - job: AppsConfiguration
+    displayName: Config My SQL and Webapp
+    steps:
+
+    - task: AzureCLI@1
+      displayName: 'Azure CLI '
+      inputs:
+        azureSubscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
+        scriptLocation: inlineScript
+        inlineScript: 'az mysql server firewall-rule create --resource-group $(RG) --server $(MySQL) --name "AllowAllWindowsAzureIps" --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0'
+    - task: MysqlDeploymentOnMachineGroup@1
+      displayName: 'Deploy Using : MySQL'
+      inputs:
+        TaskNameSelector: 'SqlTaskFile'
+        SqlFile: 'https://raw.githubusercontent.com/jmartinperalta/crud/master/sql/users.sql'
+        ServerName: '$(MySQL).mysql.database.azure.com'
+        DatabaseName: $(DBName)
+        SqlUsername: $(DBUSER)
+        SqlPassword: $(Clave)
+
+    - task: AzureRmWebAppDeployment@4
+      displayName: 'Azure App Service Deploy: CrudLabWebApp'
+      inputs:
+        azureSubscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
+        appType: webAppLinux
+        WebAppName: CrudLabWebApp
+        packageForLinux: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/code'
