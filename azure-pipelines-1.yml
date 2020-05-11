@@ -39,7 +39,7 @@ stages:
   - job: CreateWebApp_MySQL
     displayName: Create the WebApp and MySQL
     steps:
-    - task: AzurePowerShell@5
+    - task: AzurePowerShell@4
       inputs:
         azureSubscription: $(suscription)
         ScriptType: 'InlineScript'
