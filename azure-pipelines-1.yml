@@ -51,3 +51,16 @@ stages:
           -TemplateUri https://raw.githubusercontent.com/jmartinperalta/crud/master/WebApp/template.json `
           -TemplateParameterUri https://raw.githubusercontent.com/jmartinperalta/crud/master/WebApp/parameters.json
         azurePowerShellVersion: 'LatestVersion'
+
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: $(suscription)
+        subscriptionId: '8bcb5781-f38f-411c-9b22-34c1e8b45c83'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: $(RG)
+        location: $(Location)
+        templateLocation: 'URL of the file'
+        csmFileLink: 'https://raw.githubusercontent.com/jmartinperalta/crud/master/mysql/template.json'
+        csmParametersFileLink: 'https://raw.githubusercontent.com/jmartinperalta/crud/master/mysql/template.json'
+        deploymentMode: 'Incremental'
