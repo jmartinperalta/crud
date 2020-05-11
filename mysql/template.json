@@ -7,10 +7,11 @@
             "value": "dbadmin"
         },
         "administratorLoginPassword": {
+            "type": "securestring",
             "value":"M4ndr4k3*346"
         },
         "location": {
-            "type": "securestring",
+            "type": "string",
             "value": "westus2"
         },
         "serverName": {
