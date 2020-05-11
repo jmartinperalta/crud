@@ -3,43 +3,55 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "administratorLogin": {
+            "type": "string",
             "value": "dbadmin"
         },
         "administratorLoginPassword": {
             "value":"M4ndr4k3*346"
         },
         "location": {
+            "type": "securestring",
             "value": "westus2"
         },
         "serverName": {
+            "type": "string",
             "value": "myyamldbdeploy"
         },
         "skuCapacity": {
+            "type": "int",
             "value": 2
         },
         "skuFamily": {
+            "type": "string",
             "value": "Gen5"
         },
         "skuName": {
+            "type": "string",
             "value": "B_Gen5_2"
         },
         "skuSizeMB": {
+            "type": "int",
             "value": 51200
         },
         "skuTier": {
+            "type": "string",
             "value": "Basic"
         },
         "version": {
+            "type": "string",
             "value": "5.7"
         },
         "backupRetentionDays": {
+            "type": "int",
             "value": 7
         },
         "geoRedundantBackup": {
+            "type": "string",
             "value": "Disabled"
         },
         "previewFeature": {
-            "value": ""
+            "type": "string",
+            "defaultValue": ""
         },
         "tags": {
             "type": "object",
