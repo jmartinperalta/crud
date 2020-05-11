@@ -43,7 +43,7 @@ stages:
         azureSubscription: $(suscription)
         scriptType: 'batch'
         scriptLocation: 'inlineScript'
-        inlineScript: 'az mysql server create --resource-group $(RG) --name myyamldbdeploy --location $(Location) --admin-user $(DBUSER) --admin-password $(Clave) --sku-name GP_Gen5_2 --version 5.7'
+        inlineScript: az mysql server create --resource-group $(RG) --name myyamldbdeploy --location $(Location) --admin-user $(DBUSER) --admin-password $(Clave) --sku-name GP_Gen5_2 --version 5.7
     - task: AzurePowerShell@4
       displayName: 'Azure PowerShell script: InlineScript'
       inputs:
