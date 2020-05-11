@@ -40,12 +40,7 @@ stages:
   - job: CreateWebApp_MySQL
     displayName: Create the WebApp and MySQL
     steps:
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: $(suscription)
-        scriptType: 'batch'
-        scriptLocation: 'inlineScript'
-        inlineScript: 'az mysql up -g $(RG) -s $(MySQL) -d $(DBName) -u $(DBUSER) -p $(Clave)'
+
     - task: AzurePowerShell@4
       displayName: 'Azure PowerShell script: InlineScript'
       inputs:
