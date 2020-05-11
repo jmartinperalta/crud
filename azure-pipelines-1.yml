@@ -39,8 +39,8 @@ stages:
       - task: AzureResourceGroupDeployment@2
         displayName: 'Azure Deployment: ARM MySQL'
         inputs:
-          azureSubscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
-          resourceGroupName: $(suscription)
+          azureSubscription: $(suscription)
+          resourceGroupName: $(RG)
           location: $(Location)
           csmFile: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/mysql/template.json'
           csmParametersFile: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/mysql/parameters.json'
