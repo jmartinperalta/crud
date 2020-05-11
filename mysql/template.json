@@ -76,6 +76,5 @@
             "<tag-name1>": "mysql",
             "type": "Microsoft.DBforMySQL/servers"
         }
-    ],
-    "variables": {}
+        "variables": {}
 }
