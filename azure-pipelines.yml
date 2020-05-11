@@ -10,10 +10,10 @@ stages:
 - stage: Pre_Requisites
   jobs:
   - deployment: Deploy
+    environment: dev
     displayName: deploy RH Service App
   pool:
     vmImage: 'Ubuntu-16.04'
-    environment: dev
     steps:
     - task: AzureCLI@2
     inputs:
@@ -27,10 +27,10 @@ stages:
 - stage: Infra_Deploy
   jobs:
   - deployment: Deploy
+    environment: dev
     displayName: Infra Azure Deploy
   pool:
     vmImage: 'Ubuntu-16.04'
-    environment: dev
     steps:
 
     - task: AzureResourceManagerTemplateDeployment@3
@@ -60,10 +60,10 @@ stages:
 - stage: Apps_Config
   jobs:
   - deployment: Deploy
+    environment: dev
     displayName: MySQL and WebApp Config
   pool:
     vmImage: 'Ubuntu-16.04'
-    environment: dev
     steps:
     - task: AzureCLI@2
       inputs:
