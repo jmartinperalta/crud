@@ -9,7 +9,7 @@ trigger:
 stages:
 - stage: Pre_Requisites
   jobs:
-  - deployment: DeployRG
+  - deployment: Deploy
     displayName: deploy RH Service App
   pool:
     vmImage: 'Ubuntu-16.04'
@@ -25,7 +25,7 @@ stages:
 
 - stage: Infra_Deploy
   jobs:
-  - deployment: Deploy Infra
+  - deployment: Deploy
     displayName: Infra Azure Deploy
   pool:
     vmImage: 'Ubuntu-16.04'
@@ -57,7 +57,7 @@ stages:
 
 - stage: Apps_Config
   jobs:
-  - deployment: Apps Configuration
+  - deployment: Deploy
     displayName: MySQL and WebApp Config
   pool:
     vmImage: 'Ubuntu-16.04'
