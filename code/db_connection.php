@@ -1,7 +1,7 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
+$servername = "myyamldbdeploy.mysql.database.azure.com";
+$username = "dbadmin";
+$password = "M4ndr4k3*346";
 $db_name = "crud_app";
 
 // Create connection
