@@ -62,5 +62,4 @@ stages:
         location: $(Location)
         templateLocation: 'URL of the file'
         csmFileLink: 'https://raw.githubusercontent.com/jmartinperalta/crud/master/mysql/template.json'
-        csmParametersFileLink: 'https://raw.githubusercontent.com/jmartinperalta/crud/master/mysql/template.json'
         deploymentMode: 'Incremental'
