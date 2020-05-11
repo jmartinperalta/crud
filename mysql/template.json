@@ -72,6 +72,8 @@
                 "size": "51200",
                 "family": "Gen5"
             },
+            "tags": {
+            "<tag-name1>": "mysql",
             "type": "Microsoft.DBforMySQL/servers"
         }
     ],
