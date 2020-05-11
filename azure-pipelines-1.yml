@@ -16,6 +16,7 @@ variables:
   Location: westus2
   Clave: M4ndr4k3*346
   DBUSER: dbadmin
+  MySQL: myyamldbdeploy
 
 stages:
 - stage: InfraPre
@@ -38,16 +39,15 @@ stages:
   - job: CreateWebApp_MySQL
     displayName: Create the WebApp and MySQL
     steps:
-    - task: AzureCLI@2
+    - task: AzurePowerShell@5
       inputs:
         azureSubscription: $(suscription)
-        scriptType: 'batch'
-        scriptLocation: 'inlineScript'
-        inlineScript: az mysql server create --resource-group $(RG) --name myyamldbdeploy --location $(Location) --admin-user $(DBUSER) --admin-password $(Clave) --sku-name GP_Gen5_2 --version 5.7
+        ScriptType: 'InlineScript'
+        Inline: 'New-AzMySqlServer -Name $(MySQL) -ResourceGroupName $(RG) -Sku GP_Gen5_2 -GeoRedundantBackup Enabled -Location $(Location) -AdministratorUsername $(DBUSER) -AdministratorLoginPassword $(Clave)'
     - task: AzurePowerShell@4
       displayName: 'Azure PowerShell script: InlineScript'
       inputs:
-        azureSubscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
+        azureSubscription: $(suscription)
         ScriptType: InlineScript
         Inline: |
           New-AzResourceGroupDeployment -ResourceGroupName yaml-RG `
