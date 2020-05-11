@@ -25,7 +25,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'Create RG and App Service'
       inputs:
-        azureSubscription: $(subscription)
+        azureSubscription: $(suscription)
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
@@ -39,7 +39,7 @@ stages:
       - task: AzureResourceManagerTemplateDeployment@3
         inputs:
           deploymentScope: 'Resource Group'     
-          azureResourceManagerConnection: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
+          azureResourceManagerConnection: $(suscription)
           subscriptionId: '8bcb5781-f38f-411c-9b22-34c1e8b45c83'
           action: 'Create Or Update Resource Group'
           resourceGroupName: 'yaml-RG'
