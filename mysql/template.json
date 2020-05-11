@@ -72,7 +72,7 @@
                 "size": "51200",
                 "family": "Gen5"
             },
-            "tags": "",
+            "tags": "mysql",
             "type": "Microsoft.DBforMySQL/servers"
         }
     ],
