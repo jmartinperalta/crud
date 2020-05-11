@@ -36,18 +36,13 @@ stages:
   - job: CreateWebApp_MySQL
     displayName: Create the WebApp and MySQL
     steps:
-      - task: AzureResourceManagerTemplateDeployment@3
+      - task: PowerShell@2
         inputs:
-          deploymentScope: 'Resource Group'     
-          azureResourceManagerConnection: $(suscription)
-          subscriptionId: '8bcb5781-f38f-411c-9b22-34c1e8b45c83'
-          action: 'Create Or Update Resource Group'
-          resourceGroupName: 'yaml-RG'
-          location: 'West US 2'
-          templateLocation: 'Linked artifact'
-          csmFile: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/mysql/template.json'
-          csmParametersFile: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/mysql/parameters.json'
-          deploymentMode: 'Incremental'
+          targetType: 'inline'
+          script: |
+            New-AzResourceGroupDeployment -ResourceGroupName $(RG) `
+              -TemplateUri https://raw.githubusercontent.com/jmartinperalta/crud/master/mysql/parameters.json `
+              -TemplateParameterUri https://raw.githubusercontent.com/jmartinperalta/crud/master/mysql/template.json
       - task: PowerShell@2
         inputs:
           targetType: 'inline'
