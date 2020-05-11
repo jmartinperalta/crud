@@ -43,7 +43,7 @@ stages:
       inputs:
         azureSubscription: $(suscription)
         ScriptType: 'InlineScript'
-        Inline: 'New-AzMySqlServer -Name $(MySQL) -ResourceGroupName $(RG) -Sku GP_Gen5_2 -GeoRedundantBackup Enabled -Location $(Location) -AdministratorUsername $(DBUSER) -AdministratorLoginPassword $(Clave)'
+        Inline: 'New-AzMySqlServer -Name $(MySQL) -ResourceGroupName $(RG) -Sku GP_Gen5_2 -Location $(Location) -AdministratorUsername $(DBUSER) -AdministratorLoginPassword $(Clave)'
     - task: AzurePowerShell@4
       displayName: 'Azure PowerShell script: InlineScript'
       inputs:
