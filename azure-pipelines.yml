@@ -7,7 +7,7 @@ trigger:
 - master
 
 stages:
-- stage: Pre Requisites
+- stage: Pre_Requisites
   jobs:
   - deployment: DeployRG
     displayName: deploy RH Service App
@@ -23,7 +23,7 @@ stages:
       inlineScript2: 'az appservice plan create -g yaml-RG -n AppServiceyml --sku B1 --is-linux'
 
 
-- stage: Infra Deploy
+- stage: Infra_Deploy
   jobs:
   - deployment: Deploy Infra
     displayName: Infra Azure Deploy
@@ -55,7 +55,7 @@ stages:
 
 
 
-- stage: Apps Config
+- stage: Apps_Config
   jobs:
   - deployment: Apps Configuration
     displayName: MySQL and WebApp Config
