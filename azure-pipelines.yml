@@ -13,6 +13,7 @@ stages:
     displayName: deploy RH Service App
   pool:
     vmImage: 'Ubuntu-16.04'
+    environment: dev
     steps:
     - task: AzureCLI@2
     inputs:
@@ -29,6 +30,7 @@ stages:
     displayName: Infra Azure Deploy
   pool:
     vmImage: 'Ubuntu-16.04'
+    environment: dev
     steps:
 
     - task: AzureResourceManagerTemplateDeployment@3
@@ -61,6 +63,7 @@ stages:
     displayName: MySQL and WebApp Config
   pool:
     vmImage: 'Ubuntu-16.04'
+    environment: dev
     steps:
     - task: AzureCLI@2
       inputs:
