@@ -1,99 +1,34 @@
 {
     "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "administratorLogin": {
-            "type": "string",
-            "value": "dbadmin"
-        },
-        "administratorLoginPassword": {
-            "type": "securestring",
-            "value":"M4ndr4k3*346"
-        },
-        "location": {
-            "type": "string",
-            "value": "westus2"
-        },
-        "serverName": {
-            "type": "string",
-            "value": "myyamldbdeploy"
-        },
-        "skuCapacity": {
-            "type": "int",
-            "value": 2
-        },
-        "skuFamily": {
-            "type": "string",
-            "value": "Gen5"
-        },
-        "skuName": {
-            "type": "string",
-            "value": "B_Gen5_2"
-        },
-        "skuSizeMB": {
-            "type": "int",
-            "value": 51200
-        },
-        "skuTier": {
-            "type": "string",
-            "value": "Basic"
-        },
-        "version": {
-            "type": "string",
-            "value": "5.7"
-        },
-        "backupRetentionDays": {
-            "type": "int",
-            "value": 7
-        },
-        "geoRedundantBackup": {
-            "type": "string",
-            "value": "Disabled"
-        },
-        "previewFeature": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "tags": {
-            "type": "object",
-            "defaultValue": {}
-        },
-        "storageAutoGrow": {
-            "type": "string",
-            "defaultValue": "Disabled"
-        },
-        "infrastructureEncryption": {
-            "type": "string",
-            "defaultValue": "Disabled"
-        }
-    },
+   
     "resources": [
         {
             "apiVersion": "2017-12-01-preview",
             "kind": "",
-            "location": "[parameters('location')]",
-            "name": "[parameters('serverName')]",
+            "location": "westus2",
+            "name": "myyamldbdeploy",
             "properties": {
-                "version": "[parameters('version')]",
-                "administratorLogin": "[parameters('administratorLogin')]",
-                "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+                "version": "5.7",
+                "administratorLogin": "dbadmin",
+                "administratorLoginPassword": "M4ndr4k3*346",
                 "storageProfile": {
-                    "storageMB": "[parameters('skuSizeMB')]",
-                    "backupRetentionDays": "[parameters('backupRetentionDays')]",
-                    "geoRedundantBackup": "[parameters('geoRedundantBackup')]",
-                    "storageAutoGrow": "[parameters('storageAutoGrow')]"
+                    "storageMB": "51200",
+                    "backupRetentionDays": "7",
+                    "geoRedundantBackup": "Disabled",
+                    "storageAutoGrow": "Enabled"
                 },
-                "previewFeature": "[parameters('previewFeature')]",
-                "infrastructureEncryption": "[parameters('infrastructureEncryption')]"
+                "previewFeature": "",
+                "infrastructureEncryption": "Disabled"
             },
             "sku": {
-                "name": "[parameters('skuName')]",
-                "tier": "[parameters('skuTier')]",
-                "capacity": "[parameters('skuCapacity')]",
-                "size": "[parameters('skuSizeMB')]",
-                "family": "[parameters('skuFamily')]"
+                "name": "B_Gen5_2",
+                "tier": "Basic",
+                "capacity": "2",
+                "size": "51200",
+                "family": "Gen5"
             },
-            "tags": "[parameters('tags')]",
+            "tags": "MySQL",
             "type": "Microsoft.DBforMySQL/servers"
         }
     ],
