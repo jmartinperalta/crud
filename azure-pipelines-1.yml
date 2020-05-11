@@ -17,6 +17,7 @@ variables:
   Clave: M4ndr4k3*346
   DBUSER: dbadmin
   MySQL: myyamldbdeploy
+  DBName: crud_app
 
 stages:
 - stage: InfraPre
@@ -39,11 +40,12 @@ stages:
   - job: CreateWebApp_MySQL
     displayName: Create the WebApp and MySQL
     steps:
-    - task: AzurePowerShell@4
+    - task: AzureCLI@2
       inputs:
         azureSubscription: $(suscription)
-        ScriptType: 'InlineScript'
-        Inline: 'New-AzMySqlServer -Name $(MySQL) -ResourceGroupName $(RG) -Sku GP_Gen5_2 -Location $(Location) -AdministratorUsername $(DBUSER) -AdministratorLoginPassword $(Clave)'
+        scriptType: 'batch'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az mysql up -g $(RG) -s $(MySQL) -d $(DBName) -u $(DBUSER) -p $(Clave)'
     - task: AzurePowerShell@4
       displayName: 'Azure PowerShell script: InlineScript'
       inputs:
