@@ -14,6 +14,8 @@ variables:
   RG: 'yaml-RG'
   AppService: 'AppServiceyml'
   Location: westus2
+  Clave: M4ndr4k3*346
+  DBUSER: dbadmin
 
 stages:
 - stage: InfraPre
@@ -36,19 +38,19 @@ stages:
   - job: CreateWebApp_MySQL
     displayName: Create the WebApp and MySQL
     steps:
-      - task: AzureResourceGroupDeployment@2
-        displayName: 'Azure Deployment: ARM MySQL'
-        inputs:
-          azureSubscription: $(suscription)
-          resourceGroupName: $(RG)
-          location: $(Location)
-          csmFile: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/mysql/template.json'
-          csmParametersFile: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/mysql/parameters.json'
-
-      - task: PowerShell@2
-        inputs:
-          targetType: 'inline'
-          script: |
-            New-AzResourceGroupDeployment -ResourceGroupName $(RG) `
-              -TemplateUri https://raw.githubusercontent.com/jmartinperalta/crud/master/WebApp/template.json `
-              -TemplateParameterUri https://raw.githubusercontent.com/jmartinperalta/crud/master/WebApp/parameters.json
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: $(suscription)
+        scriptType: 'batch'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az mysql server create --resource-group $(RG) --name myyamldbdeploy --location $(Location) --admin-user $(DBUSER) --admin-password $(Clave) --sku-name GP_Gen5_2 --version 5.7'
+    - task: AzurePowerShell@4
+      displayName: 'Azure PowerShell script: InlineScript'
+      inputs:
+        azureSubscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
+        ScriptType: InlineScript
+        Inline: |
+          New-AzResourceGroupDeployment -ResourceGroupName yaml-RG `
+          -TemplateUri https://raw.githubusercontent.com/jmartinperalta/crud/master/WebApp/template.json `
+          -TemplateParameterUri https://raw.githubusercontent.com/jmartinperalta/crud/master/WebApp/parameters.json
+        azurePowerShellVersion: 'LatestVersion'
