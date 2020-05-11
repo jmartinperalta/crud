@@ -50,29 +50,29 @@
         {
             "apiVersion": "2017-12-01-preview",
             "kind": "",
-            "location": "[parameters('location')]",
-            "name": "[parameters('serverName')]",
+            "location": "westus2",
+            "name": "myyamldbdeploy",
             "properties": {
-                "version": "[parameters('version')]",
-                "administratorLogin": "[parameters('administratorLogin')]",
-                "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+                "version": "5.7",
+                "administratorLogin": "dbadmin",
+                "administratorLoginPassword": "M4ndr4k3*346",
                 "storageProfile": {
-                    "storageMB": "[parameters('skuSizeMB')]",
-                    "backupRetentionDays": "[parameters('backupRetentionDays')]",
-                    "geoRedundantBackup": "[parameters('geoRedundantBackup')]",
-                    "storageAutoGrow": "[parameters('storageAutoGrow')]"
+                    "storageMB": "51200",
+                    "backupRetentionDays": "7",
+                    "geoRedundantBackup": "Disabled",
+                    "storageAutoGrow": "Enabled"
                 },
                 "previewFeature": "[parameters('previewFeature')]",
                 "infrastructureEncryption": "[parameters('infrastructureEncryption')]"
             },
             "sku": {
-                "name": "[parameters('skuName')]",
-                "tier": "[parameters('skuTier')]",
-                "capacity": "[parameters('skuCapacity')]",
-                "size": "[parameters('skuSizeMB')]",
-                "family": "[parameters('skuFamily')]"
+                "name": "",
+                "tier": "Basic",
+                "capacity": "2",
+                "size": "51200",
+                "family": "Gen5"
             },
-            "tags": "[parameters('tags')]",
+            "tags": "",
             "type": "Microsoft.DBforMySQL/servers"
         }
     ],
