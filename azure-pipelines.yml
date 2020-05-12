@@ -103,7 +103,7 @@ stages:
           COMMIT;
         ServerName: '$(MySQL).mysql.database.azure.com'
         DatabaseName: '$(DBName)'
-        SqlUsername: '$(DBUSER)'
+        SqlUsername: '$(DBUSER)@$(MySQL)'
         SqlPassword: '$(Clave)'
 
 - stage: ConfigWeb
