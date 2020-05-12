@@ -57,8 +57,8 @@ stages:
           az appservice plan create -g $(RG) -n $(AppService) --sku FREE --is-linux
 - stage: InfraDeploy
   jobs:
-  - job: CreateWebApp_MySQL
-    displayName: Create the WebApp and MySQL
+  - job: CreateMySQL
+    displayName: Create the MySQL
     steps:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
@@ -71,11 +71,6 @@ stages:
         templateLocation: 'URL of the file'
         csmFileLink: 'https://raw.githubusercontent.com/jmartinperalta/crud/master/mysql/template.json'
         deploymentMode: 'Incremental'
-- stage: ConfigApps
-  jobs:
-  - job: AppsConfiguration
-    displayName: Config My SQL and Webapp
-    steps:
     - task: AzureCLI@1
       displayName: 'Azure CLI '
       inputs:
@@ -86,10 +81,15 @@ stages:
       displayName: 'Deploy Using : MySQL'
       inputs:
         SqlFile: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/sql/users.sql'
-        ServerName: myyamldbdeploy.mysql.database.azure.com
+        ServerName: $(MySQL).mysql.database.azure.com
         DatabaseName: $(DBName)
-        SqlUsername: 'dbadmin@myyamldbdeploy.mysql.database.azure.com'
+        SqlUsername: $(DBUSER)@$(MySQL)
         SqlPassword: $(Clave)
+- stage: ConfigWeb
+  jobs:
+  - job: WebAppConfiguration
+    displayName: Deploy WebApp
+    steps:
     - task: AzureCLI@1
       inputs:
         azureSubscription: $(suscription)
