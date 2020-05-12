@@ -62,7 +62,7 @@ stages:
     steps:
     - task: AzureCLI@2
       inputs:
-        azureSubscription: (suscription))
+        azureSubscription: $(suscription)
         scriptType: 'batch'
         scriptLocation: 'inlineScript'
         inlineScript: |
