@@ -60,15 +60,6 @@ stages:
   - job: CreateWebApp_MySQL
     displayName: Create the WebApp and MySQL
     steps:
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: $(suscription)
-        scriptType: 'batch'
-        scriptLocation: 'inlineScript'
-        inlineScript: |
-          az webapp create -g $(RG) -p $(AppService) -n $(appname) --runtime "PHP|7.3"
-          az webapp config connection-string set -g $(RG) -n $(appname) -t MySql --settings HOST=myyamldbdeploy.mysql.database.azure.com USER=dbadmin@myyamldbdeploy PASSWORD=M4ndr4k3*346
-          az webapp start -g $(RG) -n $(appname)
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         deploymentScope: 'Resource Group'
@@ -99,14 +90,26 @@ stages:
         DatabaseName: $(DBName)
         SqlUsername: 'dbadmin@myyamldbdeploy.mysql.database.azure.com'
         SqlPassword: $(Clave)
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
+        scriptType: 'batch'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+                  az webapp create -g $RG -p $AppService -n $(appname) --runtime "PHP|7.3"
+                  az webapp config appsettings set -g $(RG)) -n $(appname) --settings WEBSITES_PORT=80
+                  az webapp config connection-string set -g $(RG) -n $(appname) -t MySql --settings HOST=$(MySQL).mysql.database.azure.com USER=$(DBUSER)@$(MySQL) PASSWORD=$(Clave)
+                  az webapp start -g $(RG) -n $(appname)
     - task: DownloadPipelineArtifact@2
       inputs:
-        buildType: 'current'
-        targetPath: '$(Pipeline.Workspace)'
+          buildType: 'current'
+          targetPath: '$(Pipeline.Workspace)'
     - task: AzureRmWebAppDeployment@4
+      displayName: 'Deploy Artifact'
       inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: $(suscription)
-        appType: 'webAppLinux'
-        WebAppName: $(appname)
-        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+          ConnectionType: 'AzureRM'
+          azureSubscription: $(subscription)
+          appType: 'webAppLinux'
+          WebAppName: $(app.name)
+          packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+          RuntimeStack: 'PHP|7.3'
