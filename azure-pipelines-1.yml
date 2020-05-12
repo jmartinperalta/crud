@@ -78,11 +78,10 @@ stages:
     - task: MysqlDeploymentOnMachineGroup@1
       displayName: 'Deploy Using : MySQL'
       inputs:
-        TaskNameSelector: 'SqlTaskFile'
-        SqlFile: 'https://raw.githubusercontent.com/jmartinperalta/crud/master/sql/users.sql'
-        ServerName: '$(MySQL).mysql.database.azure.com'
+        SqlFile: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/sql/users.sql'
+        ServerName: myyamldbdeploy.mysql.database.azure.com
         DatabaseName: $(DBName)
-        SqlUsername: $(DBUSER)
+        SqlUsername: 'dbadmin@myyamldbdeploy.mysql.database.azure.com'
         SqlPassword: $(Clave)
 
     - task: AzureRmWebAppDeployment@4
