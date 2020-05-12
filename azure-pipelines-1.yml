@@ -18,7 +18,6 @@ variables:
   DBName: crud_app
   rootFolder: $(System.DefaultWorkingDirectory)
   appname: CrudLabWebApp
-
 stages:
 - stage: Build
   displayName: Build stage
@@ -26,7 +25,6 @@ stages:
     phpVersion: '7.3'
   jobs:
   - job: BuildJob
-    
     steps:    
     - task: ArchiveFiles@2
       displayName: 'Archive files'
@@ -36,7 +34,6 @@ stages:
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
-    
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
@@ -105,7 +102,6 @@ stages:
     - task: DownloadPipelineArtifact@2
       inputs:
         buildType: 'current'
-        artifactName: 'webapp'
         targetPath: '$(Pipeline.Workspace)'
     - task: AzureRmWebAppDeployment@4
       inputs:
