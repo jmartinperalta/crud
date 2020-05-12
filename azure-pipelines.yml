@@ -77,7 +77,7 @@ stages:
         azureSubscription: $(suscription)
         scriptLocation: inlineScript
         inlineScript: |
-            az mysql server firewall-rule create --resource-group $(RG) --server $(MySQL) --name "AllowAllWindowsAzureIps" --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0'
+            az mysql server firewall-rule create --resource-group $(RG) --server $(MySQL) --name "AllowAllWindowsAzureIps" --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
             az mysql server update --resource-group $(RG) --name $(MySQL) --ssl-enforcement Disabled
     - task: MysqlDeploymentOnMachineGroup@1
       inputs:
