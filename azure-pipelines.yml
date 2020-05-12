@@ -76,15 +76,18 @@ stages:
       inputs:
         azureSubscription: $(suscription)
         scriptLocation: inlineScript
-        inlineScript: 'az mysql server firewall-rule create --resource-group $(RG) --server $(MySQL) --name "AllowAllWindowsAzureIps" --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0'
+        inlineScript: |
+            az mysql server firewall-rule create --resource-group $(RG) --server $(MySQL) --name "AllowAllWindowsAzureIps" --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0'
+            az mysql server update --resource-group $(RG) --name $(MySQL) --ssl-enforcement Disabled
     - task: MysqlDeploymentOnMachineGroup@1
-      displayName: 'Deploy Using : MySQL'
       inputs:
-        SqlFile: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/sql/users.sql'
-        ServerName: $(MySQL).mysql.database.azure.com
-        DatabaseName: $(DBName)
-        SqlUsername: $(DBUSER)@$(MySQL)
-        SqlPassword: $(Clave)
+        TaskNameSelector: 'SqlTaskFile'
+        SqlFile: 'https://juanmartinperalta@dev.azure.com/juanmartinperalta/CrudApp/_git/CrudApp'
+        ServerName: '$(MySQL)'
+        DatabaseName: '$(DBNAME)'
+        SqlUsername: '$(DBUSER)'
+        SqlPassword: '$(Clave)'
+
 - stage: ConfigWeb
   jobs:
   - job: WebAppConfiguration
