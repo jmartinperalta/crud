@@ -35,6 +35,11 @@ stages:
         inlineScript: |
           az group create -n $(RG) -l $(Location)
           az appservice plan create -g $(RG) -n $(AppService) --sku B1 --is-linux
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Pipeline Artifact'
+      inputs:
+        targetPath: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/code'
+        artifact: WebAppCode
 - stage: InfraDeploy
   jobs:
   - job: CreateWebApp_MySQL
@@ -75,6 +80,11 @@ stages:
         azureSubscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
         scriptLocation: inlineScript
         inlineScript: 'az mysql server firewall-rule create --resource-group $(RG) --server $(MySQL) --name "AllowAllWindowsAzureIps" --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0'
+
+
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: WebApp
     - task: MysqlDeploymentOnMachineGroup@1
       displayName: 'Deploy Using : MySQL'
       inputs:
@@ -90,4 +100,4 @@ stages:
         azureSubscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
         appType: webAppLinux
         WebAppName: CrudLabWebApp
-        packageForLinux: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/code'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/WebApp'
