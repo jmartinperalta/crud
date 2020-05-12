@@ -109,6 +109,6 @@ stages:
           ConnectionType: 'AzureRM'
           azureSubscription: $(suscription)
           appType: 'webAppLinux'
-          WebAppName: $(app.name)
+          WebAppName: $(appname)
           packageForLinux: '$(Pipeline.Workspace)/**/157.zip'
           RuntimeStack: 'PHP|7.3'
