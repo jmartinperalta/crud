@@ -60,6 +60,11 @@ stages:
   - job: CreateMySQL
     displayName: Create the MySQL
     steps:
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'sqlcode'
+        Contents: '**'
+        TargetFolder: '$(build.artifactstagingdirectory)'
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         deploymentScope: 'Resource Group'
@@ -87,7 +92,7 @@ stages:
         SqlUsername: '$(DBUSER)'
         SqlPassword: '$(Clave)'
         TaskNameSelector: 'SqlTaskFile'
-        SqlFile: 'https://dev.azure.com/juanmartinperalta/_git/CrudApp?path=%2Fusers.sql'
+        SqlFile: '$(build.artifactstagingdirectory)/users.sql'
         IpDetectionMethod: 'AutoDetect'
 
 - stage: ConfigWeb
