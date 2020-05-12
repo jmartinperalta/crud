@@ -90,10 +90,9 @@ stages:
         DatabaseName: $(DBName)
         SqlUsername: 'dbadmin@myyamldbdeploy.mysql.database.azure.com'
         SqlPassword: $(Clave)
-    - task: AzureCLI@2
+    - task: AzureCLI@1
       inputs:
         azureSubscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
-        scriptType: 'batch'
         scriptLocation: 'inlineScript'
         inlineScript: |
                   az webapp create -g $RG -p $AppService -n $(appname) --runtime "PHP|7.3"
