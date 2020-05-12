@@ -84,7 +84,7 @@ stages:
 
     - task: DownloadPipelineArtifact@2
       inputs:
-        artifact: WebApp
+        artifact: WebAppCode
     - task: MysqlDeploymentOnMachineGroup@1
       displayName: 'Deploy Using : MySQL'
       inputs:
