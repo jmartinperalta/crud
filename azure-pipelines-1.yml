@@ -16,7 +16,44 @@ variables:
   DBUSER: dbadmin
   MySQL: myyamldbdeploy
   DBName: crud_app
+  rootFolder: $(System.DefaultWorkingDirectory)
+
 stages:
+- stage: Build
+  displayName: Build stage
+  variables:
+    phpVersion: '7.3'
+  jobs:
+  - job: BuildJob
+    
+    steps:
+    - script: |
+        sudo update-alternatives --set php /usr/bin/php$(phpVersion)
+        sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
+        sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
+        sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
+        sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
+        php -version
+      workingDirectory: $(rootFolder)
+      displayName: 'Use PHP version $(phpVersion)'
+    
+    - script: composer install --no-interaction --prefer-dist
+      workingDirectory: $(rootFolder)
+      displayName: 'Composer install'
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(rootFolder)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+    
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      displayName: 'Upload package'
+      artifact: Webapp
+
 - stage: InfraPre
   jobs:
   - job: Setup_RG_AppSvC
@@ -66,7 +103,7 @@ stages:
     - task: AzureCLI@1
       displayName: 'Azure CLI '
       inputs:
-        azureSubscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
+        azureSubscription: $(suscription)
         scriptLocation: inlineScript
         inlineScript: 'az mysql server firewall-rule create --resource-group $(RG) --server $(MySQL) --name "AllowAllWindowsAzureIps" --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0'
     - task: MysqlDeploymentOnMachineGroup@1
@@ -78,9 +115,9 @@ stages:
         SqlUsername: 'dbadmin@myyamldbdeploy.mysql.database.azure.com'
         SqlPassword: $(Clave)
     - task: AzureRmWebAppDeployment@4
-      displayName: 'Azure App Service Deploy: CrudLabWebApp'
       inputs:
-        azureSubscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
-        appType: webAppLinux
-        WebAppName: CrudLabWebApp
-        packageForLinux: '$(System.DefaultWorkingDirectory)/WebApp'
+        ConnectionType: 'AzureRM'
+        azureSubscription: $(suscription)
+        appType: 'webAppLinux'
+        WebAppName: 'CrudLabWebApp'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
