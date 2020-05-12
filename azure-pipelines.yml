@@ -8,7 +8,7 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 variables:
-  suscription: 'Suscripción de Visual Studio Professional(8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
+  suscription: 'ConnectionCrud'
   RG: 'yaml-RG'
   AppService: 'AppServiceyml'
   Location: westus2
@@ -99,16 +99,11 @@ stages:
                   az webapp config appsettings set -g $(RG) -n $(appname) --settings WEBSITES_PORT=80
                   az webapp config connection-string set -g $(RG) -n $(appname) -t MySql --settings HOST=$(MySQL).mysql.database.azure.com USER=$(DBUSER)@$(MySQL) PASSWORD=$(Clave)
                   az webapp start -g $(RG) -n $(appname)
-    - task: DownloadPipelineArtifact@2
-      inputs:
-          buildType: 'current'
-          targetPath: '$(Pipeline.Workspace)'
     - task: AzureRmWebAppDeployment@4
-      displayName: 'Deploy Artifact'
       inputs:
-          ConnectionType: 'AzureRM'
-          azureSubscription: $(suscription)
-          appType: 'webAppLinux'
-          WebAppName: $(appname)
-          packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
-          RuntimeStack: 'PHP|7.3'
+        ConnectionType: 'AzureRM'
+        azureSubscription: $(suscription)
+        appType: 'webAppLinux'
+        WebAppName: $(appname)
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        RuntimeStack: 'PHP|7.3'
