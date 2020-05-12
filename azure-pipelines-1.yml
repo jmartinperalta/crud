@@ -5,10 +5,8 @@
 
 trigger:
 - master
-
 pool:
   vmImage: 'ubuntu-latest'
-
 variables:
   suscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
   RG: 'yaml-RG'
@@ -18,7 +16,6 @@ variables:
   DBUSER: dbadmin
   MySQL: myyamldbdeploy
   DBName: crud_app
-
 stages:
 - stage: InfraPre
   jobs:
@@ -35,17 +32,11 @@ stages:
         inlineScript: |
           az group create -n $(RG) -l $(Location)
           az appservice plan create -g $(RG) -n $(AppService) --sku B1 --is-linux
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish Pipeline Artifact'
-      inputs:
-        targetPath: 'https://github.com/jmartinperalta/crud/blob/master/Codephp.zip'
-        artifact: WebAppCode
 - stage: InfraDeploy
   jobs:
   - job: CreateWebApp_MySQL
     displayName: Create the WebApp and MySQL
     steps:
-
     - task: AzurePowerShell@4
       displayName: 'Azure PowerShell script: InlineScript'
       inputs:
@@ -56,7 +47,6 @@ stages:
           -TemplateUri https://raw.githubusercontent.com/jmartinperalta/crud/master/WebApp/template.json `
           -TemplateParameterUri https://raw.githubusercontent.com/jmartinperalta/crud/master/WebApp/parameters.json
         azurePowerShellVersion: 'LatestVersion'
-
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         deploymentScope: 'Resource Group'
@@ -73,16 +63,12 @@ stages:
   - job: AppsConfiguration
     displayName: Config My SQL and Webapp
     steps:
-
     - task: AzureCLI@1
       displayName: 'Azure CLI '
       inputs:
         azureSubscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
         scriptLocation: inlineScript
         inlineScript: 'az mysql server firewall-rule create --resource-group $(RG) --server $(MySQL) --name "AllowAllWindowsAzureIps" --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0'
-
-
-    
     - task: MysqlDeploymentOnMachineGroup@1
       displayName: 'Deploy Using : MySQL'
       inputs:
@@ -91,12 +77,6 @@ stages:
         DatabaseName: $(DBName)
         SqlUsername: 'dbadmin@myyamldbdeploy.mysql.database.azure.com'
         SqlPassword: $(Clave)
-
-    - task: DownloadBuildArtifacts@0
-      displayName: 'Download Build Artifacts'
-      inputs:
-        artifactName: WebApp
-
     - task: AzureRmWebAppDeployment@4
       displayName: 'Azure App Service Deploy: CrudLabWebApp'
       inputs:
