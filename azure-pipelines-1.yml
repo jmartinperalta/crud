@@ -35,11 +35,11 @@ stages:
         inlineScript: |
           az group create -n $(RG) -l $(Location)
           az appservice plan create -g $(RG) -n $(AppService) --sku B1 --is-linux
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: WebApp'
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Pipeline Artifact'
       inputs:
-        PathtoPublish: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/code'
-        ArtifactName: WebApp
+        targetPath: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/Codephp.zip'
+        artifact: WebAppCode
 - stage: InfraDeploy
   jobs:
   - job: CreateWebApp_MySQL
