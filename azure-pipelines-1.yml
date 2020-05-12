@@ -96,7 +96,7 @@ stages:
         scriptLocation: 'inlineScript'
         inlineScript: |
                   az webapp create -g $RG -p $AppService -n $(appname) --runtime "PHP|7.3"
-                  az webapp config appsettings set -g $(RG)) -n $(appname) --settings WEBSITES_PORT=80
+                  az webapp config appsettings set -g $(RG) -n $(appname) --settings WEBSITES_PORT=80
                   az webapp config connection-string set -g $(RG) -n $(appname) -t MySql --settings HOST=$(MySQL).mysql.database.azure.com USER=$(DBUSER)@$(MySQL) PASSWORD=$(Clave)
                   az webapp start -g $(RG) -n $(appname)
     - task: DownloadPipelineArtifact@2
