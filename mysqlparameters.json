@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "serverName": {
-            "value": "localhost"
+            "value": "myyamldbdeploy"
         },
         "location": {
-            "value": "estus2"
+            "value": "westus2"
         },
         "skuName": {
             "value": "B_Gen5_2"
@@ -39,7 +39,7 @@
             "value": "Disabled"
         },
         "administratorLogin": {
-            "value": "root"
+            "value": "dbadmin"
         },
         "administratorLoginPassword": {
             "value": "M4ndr4k3*346"
