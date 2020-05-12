@@ -38,7 +38,7 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Pipeline Artifact'
       inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/code'
+        targetPath: 'https://juanmartinperalta@dev.azure.com/juanmartinperalta/PruebaLab/_git/crud2/code'
         artifact: WebAppCode
 - stage: InfraDeploy
   jobs:
