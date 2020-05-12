@@ -108,7 +108,7 @@ stages:
       displayName: 'Deploy Artifact'
       inputs:
           ConnectionType: 'AzureRM'
-          azureSubscription: $(subscription)
+          azureSubscription: $(suscription)
           appType: 'webAppLinux'
           WebAppName: $(app.name)
           packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
