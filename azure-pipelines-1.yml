@@ -110,5 +110,5 @@ stages:
           azureSubscription: $(suscription)
           appType: 'webAppLinux'
           WebAppName: $(appname)
-          packageForLinux: '$(Pipeline.Workspace)/**/157.zip'
+          packageForLinux: '$(Pipeline.Workspace)/**/159.zip'
           RuntimeStack: 'PHP|7.3'
