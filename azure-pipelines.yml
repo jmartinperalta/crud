@@ -99,3 +99,16 @@ stages:
                   az webapp config appsettings set -g $(RG) -n $(appname) --settings WEBSITES_PORT=80
                   az webapp config connection-string set -g $(RG) -n $(appname) -t MySql --settings HOST=$(MySQL).mysql.database.azure.com USER=$(DBUSER)@$(MySQL) PASSWORD=$(Clave)
                   az webapp start -g $(RG) -n $(appname)
+    - task: DownloadPipelineArtifact@2
+      inputs:
+          buildType: 'current'
+          targetPath: '$(Pipeline.Workspace)'
+    - task: AzureRmWebAppDeployment@4
+      displayName: 'Deploy Artifact'
+      inputs:
+          ConnectionType: 'AzureRM'
+          azureSubscription: $(subscription)
+          appType: 'webAppLinux'
+          WebAppName: $(app.name)
+          packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+          RuntimeStack: 'PHP|7.3'
