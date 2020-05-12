@@ -1,0 +1,114 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+pool:
+  vmImage: 'ubuntu-latest'
+variables:
+  suscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
+  RG: 'yaml-RG'
+  AppService: 'AppServiceyml'
+  Location: westus2
+  Clave: M4ndr4k3*346
+  DBUSER: dbadmin
+  MySQL: myyamldbdeploy
+  DBName: crud_app
+  rootFolder: $(System.DefaultWorkingDirectory)
+  appname: CrudLabWebApp
+stages:
+- stage: Build
+  displayName: Build stage
+  variables:
+    phpVersion: '7.3'
+  jobs:
+  - job: BuildJob
+    steps:    
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: 'code'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'WebApp'
+        publishLocation: 'Container'
+
+- stage: InfraPre
+  jobs:
+  - job: Setup_RG_AppSvC
+    displayName: Setup RG and App Service
+    steps:
+    - checkout: none
+    - task: AzureCLI@2
+      displayName: 'Create RG and App Service'
+      inputs:
+        azureSubscription: $(suscription)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az group create -n $(RG) -l $(Location)
+          az appservice plan create -g $(RG) -n $(AppService) --sku FREE --is-linux
+- stage: InfraDeploy
+  jobs:
+  - job: CreateWebApp_MySQL
+    displayName: Create the WebApp and MySQL
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: $(suscription)
+        subscriptionId: '8bcb5781-f38f-411c-9b22-34c1e8b45c83'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: $(RG)
+        location: $(Location)
+        templateLocation: 'URL of the file'
+        csmFileLink: 'https://raw.githubusercontent.com/jmartinperalta/crud/master/mysql/template.json'
+        deploymentMode: 'Incremental'
+- stage: ConfigApps
+  jobs:
+  - job: AppsConfiguration
+    displayName: Config My SQL and Webapp
+    steps:
+    - task: AzureCLI@1
+      displayName: 'Azure CLI '
+      inputs:
+        azureSubscription: $(suscription)
+        scriptLocation: inlineScript
+        inlineScript: 'az mysql server firewall-rule create --resource-group $(RG) --server $(MySQL) --name "AllowAllWindowsAzureIps" --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0'
+    - task: MysqlDeploymentOnMachineGroup@1
+      displayName: 'Deploy Using : MySQL'
+      inputs:
+        SqlFile: '$(System.DefaultWorkingDirectory)/_jmartinperalta_crud/sql/users.sql'
+        ServerName: myyamldbdeploy.mysql.database.azure.com
+        DatabaseName: $(DBName)
+        SqlUsername: 'dbadmin@myyamldbdeploy.mysql.database.azure.com'
+        SqlPassword: $(Clave)
+    - task: AzureCLI@1
+      inputs:
+        azureSubscription: 'Suscripción de Visual Studio Professional (8bcb5781-f38f-411c-9b22-34c1e8b45c83)'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+                  az webapp create -g $(RG) -p $(AppService) -n $(appname) --runtime "PHP|7.3"
+                  az webapp config appsettings set -g $(RG) -n $(appname) --settings WEBSITES_PORT=80
+                  az webapp config connection-string set -g $(RG) -n $(appname) -t MySql --settings HOST=$(MySQL).mysql.database.azure.com USER=$(DBUSER)@$(MySQL) PASSWORD=$(Clave)
+                  az webapp start -g $(RG) -n $(appname)
+    - task: DownloadPipelineArtifact@2
+      inputs:
+          buildType: 'current'
+          targetPath: '$(Pipeline.Workspace)'
+    - task: AzureRmWebAppDeployment@4
+      displayName: 'Deploy Artifact'
+      inputs:
+          ConnectionType: 'AzureRM'
+          azureSubscription: $(suscription)
+          appType: 'webAppLinux'
+          WebAppName: $(appname)
+          packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+          RuntimeStack: 'PHP|7.3'
