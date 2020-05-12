@@ -102,13 +102,13 @@ stages:
     - task: DownloadPipelineArtifact@2
       inputs:
           buildType: 'current'
-          targetPath: '$(Pipeline.Workspace)'
+          targetPath: '$(Build.ArtifactStagingDirectory)'
     - task: AzureRmWebAppDeployment@4
       displayName: 'Deploy Artifact'
       inputs:
           ConnectionType: 'AzureRM'
-          azureSubscription: $(subscription)
+          azureSubscription: $(suscription)
           appType: 'webAppLinux'
-          WebAppName: $(app.name)
-          packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+          WebAppName: $(appname)
+          packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
           RuntimeStack: 'PHP|7.3'
