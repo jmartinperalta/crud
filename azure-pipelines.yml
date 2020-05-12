@@ -87,7 +87,7 @@ stages:
         SqlUsername: '$(DBUSER)'
         SqlPassword: '$(Clave)'
         TaskNameSelector: 'SqlTaskFile'
-        SqlFile: '''https://juanmartinperalta@dev.azure.com/juanmartinperalta/CrudApp/_git/CrudApp'
+        SqlFile: 'https://dev.azure.com/juanmartinperalta/_git/CrudApp?path=%2Fusers.sql'
         IpDetectionMethod: 'AutoDetect'
 
 - stage: ConfigWeb
