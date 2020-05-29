@@ -1,6 +1,6 @@
 <?php
-$servername = "myyamldbdeploy.mysql.database.azure.com";
-$username = "dbadmin";
+$servername = "mysqljperalta.mysql.database.azure.com";
+$username = "localadmin";
 $password = "M4ndr4k3*346";
 $db_name = "crud_app";
 
