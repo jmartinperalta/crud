@@ -3,7 +3,7 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-DROP TABLE 'users';
+DROP TABLE users;
 
 CREATE TABLE `users` (
   `id` int(11) UNSIGNED NOT NULL,
